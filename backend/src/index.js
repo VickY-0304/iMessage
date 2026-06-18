@@ -8,12 +8,17 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import fs from "fs";
 import path from "path";
 import job from "./lib/cron.js";
+import { clerkMiddleware } from "@clerk/express";
+import clerkWebhook from './webhooks/clerkWebhooks.js'
+
 
 const app = express();
 const PORT = process.env.PORT || 2026;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 const publicDir = path.join(process.cwd(), "public");
+
+app.use("/api/webhooks/clerk", express.raw({type : "application/json"}), clerkWebhook)
 
 app.use(express.json());
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
@@ -22,6 +27,8 @@ app.use(clerkMiddleware());
 app.get("/health", (req, res) => {
   res.send("Hi");
 });
+
+
 
 if (fs.existsSync(publicDir)) {
   app.use(express.static(publicDir));
