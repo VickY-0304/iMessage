@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
       const fullName =
         [u.first_name, u.last_name].filter(Boolean).join(" ") || u.username || email?.split("@")[0];
 
-      await User.findOneAndUpdate(
+      await Users.findOneAndUpdate(
         { clerkId: u.id },
         { clerkId: u.id, email, fullName, profilePic: u.image_url },
         { new: true, upsert: true, setDefaultsOnInsert: true },
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
     }
 
     if (evt.type === "user.deleted") {
-      if (evt.data.id) await User.findOneAndDelete({ clerkId: evt.data.id });
+      if (evt.data.id) await Users.findOneAndDelete({ clerkId: evt.data.id });
     }
 
     res.status(200).json({ received: true });
