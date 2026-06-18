@@ -8,7 +8,6 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 import fs from "fs";
 import path from "path";
 import job from "./lib/cron.js";
-import { clerkMiddleware } from "@clerk/express";
 import clerkWebhook from './webhooks/clerkWebhooks.js'
 
 
